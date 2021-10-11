@@ -33,13 +33,6 @@ class Post
     {
         // $posts = self::$blog_posts;
         $posts = static::all();
-            // $post = [];
-            // foreach($posts as $p) {
-            //     if($p["slug"] === $slug) {
-            //         $post = $p;
-            //     }
-            // }
-
             return $posts->firstWhere('slug', $slug);
-        }
+    }
 }
