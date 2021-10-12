@@ -14,4 +14,11 @@ class Post extends Model
 
     // guarded = yg gabole diisi, sisanya boleh
     protected $guarded = ['id'];
+
+    // menghubungkan ke model Category
+    public function category()
+    {
+        // hubungan post ke category = one to one
+        return $this->belongsTo(Category::class);
+    }
 }
