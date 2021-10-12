@@ -37,5 +37,9 @@ Route::get('/about', function () {
 });
 
 Route::get('/posts', [PostController::class, 'index']);
-// halaman single post
-Route::get('posts/{slug}', [PostController::class, 'show']);
+
+// halaman single post, yg didalam{} walopun kita ganti jadi slug, dy tetap nyari id
+// Route::get('posts/{post}', [PostController::class, 'show']);
+
+// klo gini baru dy nyari slug
+Route::get('posts/{post:slug}', [PostController::class, 'show']);
