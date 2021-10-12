@@ -21,4 +21,10 @@ class Post extends Model
         // hubungan post ke category = one to one
         return $this->belongsTo(Category::class);
     }
+
+    // menghubungkan ke model user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
