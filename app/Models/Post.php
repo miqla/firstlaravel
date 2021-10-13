@@ -17,6 +17,39 @@ class Post extends Model
     // mindahin with dari controller post, utk avoid N+1 problem
     protected $with = ['category', 'author'];
 
+    // nama scopenya bebas, klo sekarang filter
+    public function scopeFilter($query, array $filters)
+    {
+        // jika ada sesuatu yg ditulis di kolom pencarian
+        // jika ada maka ambil..
+        // if(isset($filters['search']) ? $filters['search'] : false){
+        //     return $query->where('title', 'like', '%' . $filters['search'] . '%')
+        //                  ->orWhere('body', 'like', '%' . $filters['search'] . '%');
+        // }
+
+        // when = pengganti if       $filters['search'] akan masuk ke $search   sda
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            return $query->where('title', 'like', '%' . $search . '%')
+                         ->orWhere('body', 'like', '%' . $search . '%');
+        });
+
+        // whereHas = join table, fitur laravel
+        $query->when($filters['category'] ?? false, function($query, $category) {
+            return $query->whereHas('category', function($query) use($category){
+                $query->where('slug', $category);
+            });
+        });
+        // kalo ada satu, jalanin satu, klo ada dua"nya jalanin dua"nya
+
+        // sda, tpi yg ini pake arrow function
+        $query->when($filters['author'] ?? false, fn($query, $author) =>
+            $query->whereHas('author', fn($query) =>
+                $query->where('username', $author)
+            )
+        );
+    }
+
+
     // menghubungkan ke model Category
     public function category()
     {

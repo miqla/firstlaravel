@@ -2,24 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 
 class PostController extends Controller
 {
     public function index()
     {
-        return view('posts', [
-            "title" => "All Posts",
-            // "posts" => Post::all()
-            "active" => 'posts',
+        $title = '';
+        if(request('category')) {
+            $category = Category::firstWhere('slug', request('category'));
+            $title = ' in ' . $category->name;
+        }
 
-            // latest() biar diurut berdasarkan yg trakhir dipost
-            // pake with to avoid N+1 problem, eager loading
-            // kasih comment karna udah dipindah ke postmodel
-            // "posts" => Post::with(['author','category'])->latest()->get()
-            
-            "posts" => Post::latest()->get()
+        if(request('author')) {
+            $author = User::firstWhere('username', request('author'));
+            $title = ' by ' . $author->name;
+        }
+
+        return view('posts', [
+            "title" => "All Posts" . $title,
+            "active" => 'posts',
+            // filter di post model
+            // get diganti jadi paginate(jumlah yg ditampilkan tiap halaman)
+            "posts" => Post::latest()->filter(request(['search', 'category', 'author']))->paginate(7)->withQueryString()
+            // withQueryString() = bawa apapun yg ada di query string sebelumnya
             
         ]);
     }
