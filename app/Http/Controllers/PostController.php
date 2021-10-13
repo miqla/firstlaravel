@@ -11,7 +11,9 @@ class PostController extends Controller
     {
         return view('posts', [
             "title" => "Posts",
-            "posts" => Post::all()
+            // "posts" => Post::all()
+            // biar diurut berdasarkan yg trakhir dipost
+            "posts" => Post::latest()->get()
         ]);
     }
 
