@@ -15,10 +15,7 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        // \App\Models\User::factory(10)->create();
-        User::factory(10)->create();    //gaperlu pake namespace karna diatas udah pake use
-
+    {       
         // utk table user
         // User::create([
         //     'name' => 'Mila Rabbani',
@@ -32,9 +29,18 @@ class DatabaseSeeder extends Seeder
         //     'password' => bcrypt('12345')
         // ]);
 
+         // \App\Models\User::factory(10)->create();
+         User::factory(10)->create();    //gaperlu pake namespace karna diatas udah pake use
+
+
         Category::create([
             'name' => 'Web Programming',
             'slug' => 'web-programing'
+        ]);
+
+        Category::create([
+            'name' => 'Web Design',
+            'slug' => 'web-design'
         ]);
 
         Category::create([

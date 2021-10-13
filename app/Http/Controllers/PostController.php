@@ -12,9 +12,15 @@ class PostController extends Controller
         return view('posts', [
             "title" => "All Posts",
             // "posts" => Post::all()
+            "active" => 'posts',
+
             // latest() biar diurut berdasarkan yg trakhir dipost
-            "posts" => Post::with(['author','category'])->latest()->get()
             // pake with to avoid N+1 problem, eager loading
+            // kasih comment karna udah dipindah ke postmodel
+            // "posts" => Post::with(['author','category'])->latest()->get()
+            
+            "posts" => Post::latest()->get()
+            
         ]);
     }
 
@@ -24,6 +30,7 @@ class PostController extends Controller
         return view('post', [
             "title" => "Single Post",
             // "post" => Post::find($id)
+            "active" => 'posts',
             "post" => $post
         ]);
     }

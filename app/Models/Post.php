@@ -14,6 +14,8 @@ class Post extends Model
 
     // guarded = yg gabole diisi, sisanya boleh
     protected $guarded = ['id'];
+    // mindahin with dari controller post, utk avoid N+1 problem
+    protected $with = ['category', 'author'];
 
     // menghubungkan ke model Category
     public function category()
