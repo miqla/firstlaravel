@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
@@ -76,9 +77,15 @@ Route::get('/categories', function() {
 //     ]);
 // });
 
+// auth = user sudah login,     guest =  belum login
 
-Route::get('/login', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+// authenticate, nama method, boleh diganti, controller login->method authenticate
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/register', [RegisterController::class, 'index']);
-// store = method, biasanya digunakan utk nyimpan data
+Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
+// store = method, biasanya digunakan utk nyimpan data, boleh ganti namanya
 Route::post('/register', [RegisterController::class, 'store']);
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
