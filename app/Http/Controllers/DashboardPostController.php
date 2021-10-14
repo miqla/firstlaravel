@@ -79,7 +79,11 @@ class DashboardPostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('dashboard.posts.edit', [
+            // ngirim data yg mau diedit
+            'post' => $post,
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -89,9 +93,32 @@ class DashboardPostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
+
+    //  request = data yg baru,     post=  data lama yg sudah ada di table lama
     public function update(Request $request, Post $post)
     {
-        //
+        $rules = [
+            'title' => 'required|max:255',
+            'category_id' => 'required',
+            'body' => 'required'
+        ];
+
+        // mengatasi masalah validasi slug di update
+        if($request->slug != $post->slug) {
+            $rules['slug'] = 'required|unique:posts';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 200);
+        // strip_tags($request->body) = biar tag html dari hasil input nya ga kebawa
+
+        Post::where('id', $post->id)
+              ->update($validatedData);
+
+        return redirect('/dashboard/posts')->with('success', 'Post has been updated!');
+
     }
 
     /**
@@ -102,7 +129,8 @@ class DashboardPostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        Post::destroy($post->id);
+        return redirect('/dashboard/posts')->with('success', 'Post has been deleted!');
     }
 
     public function checkSlug(Request $request)
