@@ -17,9 +17,6 @@
       {!! $post->body !!}
       {{-- pake !! biar tag html nya dieksekusi, bukan di tampilkan --}}  
       </article>    
-
-      {{-- kasih display block biar bisa diatur posisinya --}}
-      <a href="/posts" class="text-decoration-none mt-3 d-block">Back to Posts</a>
     </div>
   </div>
 </div> 
