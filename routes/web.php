@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
@@ -11,6 +10,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 
+use App\Http\Controllers\DashboardPostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,4 +88,8 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 // store = method, biasanya digunakan utk nyimpan data, boleh ganti namanya
 Route::post('/register', [RegisterController::class, 'store']);
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard', function(){
+    return view('dashboard.index');
+})->middleware('auth');
+
+Route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
