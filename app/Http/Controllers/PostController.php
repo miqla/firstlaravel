@@ -25,6 +25,7 @@ class PostController extends Controller
         return view('posts', [
             "title" => "All Posts" . $title,
             "active" => 'posts',
+            "username" => "",
             // filter di post model
             // get diganti jadi paginate(jumlah yg ditampilkan tiap halaman)
             "posts" => Post::latest()->filter(request(['search', 'category', 'author']))->paginate(7)->withQueryString()
